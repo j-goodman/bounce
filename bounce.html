@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>bounce</title>
+
+    <script type="text/javascript">
+      window.onload = function () {
+        var canvas = document.getElementById("gameWindow"),
+          a = canvas.getContext("2d")
+
+        a.drawBall = function () {
+          a.fillStyle = "red";
+          a.beginPath();
+          a.arc(ball_x, ball_y, 16, 0, Math.PI * 2, false);
+          a.fill();
+        };
+
+        a.moveBall = function () {
+          ball_x += ball_xspeed;
+          ball_y += ball_yspeed;
+          ball_xspeed += ball_xaccel;
+          ball_yspeed += ball_yaccel;
+        };
+
+        document.onkeydown = function(e) {
+          if (e.keyCode == '37') { //left
+            ball_xspeed = -24;
+          } else if (e.keyCode == '39') { //right
+            ball_xspeed = 24;
+          } else if (e.keyCode == '40') { //down
+            ball_yspeed = 24;
+          } else if (e.keyCode == '38') { //up
+            ball_yspeed = -24;
+          }
+        };
+
+        ball_x = 80;
+        ball_y = 80;
+        ball_xspeed = 12;
+        ball_yspeed = -8;
+        ball_xaccel = 0;
+        ball_yaccel = 1;
+        setInterval(function(){
+          a.fillStyle = "black";
+          a.fillRect(0, 0, canvas.width, canvas.height)
+
+          a.drawBall();
+
+          a.moveBall();
+          if (ball_y > canvas.height-16) {
+            ball_y = canvas.height-16;
+            ball_yspeed = ball_yspeed*(-1)*(0.8)+1;
+          }
+
+          if (ball_x > canvas.width-16) {
+            ball_x = canvas.width-16;
+            ball_xspeed = ball_xspeed*(-1)*(0.6);
+          }
+
+          if (ball_x < 16) {
+            ball_x = 16;
+            ball_xspeed = ball_xspeed*(-1)*(0.6);
+          }
+
+        }, 30);
+      };
+    </script>
+  </head>
+  <body>
+    <canvas id="gameWindow" width="640" height="480">
+      Your browser doesn't support HTML5 Canvas!
+    </canvas>
+  </body>
+</html>
